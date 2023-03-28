@@ -19,7 +19,7 @@ const MultiStepForm = () => {
     setDisabled(false) 
   }
   
-  console.log(steps.length)
+  //console.log(steps.length)
   useEffect(()=>{
   },[])
   //console.log("Student data", studentData)
@@ -41,7 +41,7 @@ const MultiStepForm = () => {
     )))
    }
 </ol>
-<div className='flex flex-col justify-center items-center h-screen'>
+<div className='flex flex-col justify-center items-center overflow-y-scroll'>
     {
         toggleStep ? <UserRegistrationForm toggleHandler={toggleHandler} setStudentData={setStudentData} /> : 
         <CourseDetails backtoggleHandler={backtoggleHandler}  setStudentData={setStudentData} 

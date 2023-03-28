@@ -1,40 +1,25 @@
 import React, { useEffect, useState } from 'react'
 import { useDispatch } from 'react-redux'
-import { addCourseDetails } from '../userdataSlice'
- 
-const AddNewCourse = ({setAddProperty, setStudentData, studentData}) => {
-  const [course, setCourse] = useState('')
+import { addUser } from '../userdataSlice'
+
+const AddThirdCourse = ({setStudentData, studentData}) => {
+    const [course, setCourse] = useState('')
   const [duration, setDuration] = useState('')
   const [details, setDetails] = useState('')
-
   const dispatch = useDispatch()
-  useEffect(()=>{
-    setAddProperty(true)
-  },[])
-
-  const courseDetailsHandler = (e) => {
-    e.preventDefault() 
-    setAddProperty(false)
-    
-    // let courseDetails = {course, duration, details}
-   // console.log("Before", studentData)
+  const courseDetailsHandler = (e) =>{
+    e.preventDefault()
     let courses = [{course, duration, details}]
-    console.log(courses)
+   
     setStudentData(prevState => ({...prevState,courseDetails:[...prevState.courseDetails,{course, duration, details} ]}))
-    //console.log("After", studentData)
-    //   dispatch(addCourseDetails({studentData}))
- 
-
-    //dispatch(addCourseDetails({courseDetails}))
 
   }
   useEffect(()=>{
-    console.log("After", studentData)
-    //dispatch(addCourseDetails({studentData}))
+    studentData.courseDetails.length >= 2 && dispatch(addUser(studentData))
   },[studentData, dispatch])
   return (
     <>
-    <div className='flex flex-col'>
+     <div className='flex flex-col'>
     <form className="w-full max-w-lg my-6" onSubmit={courseDetailsHandler}>
     <div className="flex flex-wrap -mx-3 mb-6">
       <div className="w-full md:w-1/2 px-3 mb-6 md:mb-0">
@@ -80,9 +65,8 @@ const AddNewCourse = ({setAddProperty, setStudentData, studentData}) => {
   </form>
   
     </div>
-   
     </>
   )
 }
 
-export default AddNewCourse
+export default AddThirdCourse

@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from 'react'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { addCourseDetails} from '../userdataSlice'
 import AddNewCourse from './AddNewCourse'
+import AddThirdCourse from './AddThirdCourse'
 
 const CourseDetails = ({backtoggleHandler, setStudentData, studentData}) => {
 const [course, setCourse] = useState('')
@@ -11,8 +12,9 @@ const [disabled, setDisabled] = useState(true)
 const [addproperty, setAddProperty] = useState(true)
 const [secondprop, setSecondProp] = useState(false)
 const [thirdprop, setThirdProp] = useState(false)
-
+//const courses = useSelector(store => store.)
 const dispatch = useDispatch()
+//console.log("Student", studentData.courseDetails.length)
 const courseDetailsHander = (e) => {
  e.preventDefault()
  
@@ -23,6 +25,8 @@ const courseDetailsHander = (e) => {
 }
 const addPropertyHandler = () => {
   setSecondProp(true)
+  //studentData!=='' && 
+  studentData.courseDetails.length >= 2 && setThirdProp(true)
 }
 useEffect(()=>{
   if(course!=='' && duration!=='' && details!==''){
@@ -96,7 +100,12 @@ useEffect(()=>{
     </div>
    </form>
    {
-    secondprop ? <AddNewCourse setAddProperty={setAddProperty} studentData={studentData}
+    secondprop ? <AddNewCourse setAddProperty={setAddProperty} studentData={studentData} 
+    setThirdProp={setThirdProp} 
+     setStudentData={setStudentData} />: ""
+  }
+   {
+    thirdprop ? <AddThirdCourse setAddProperty={setAddProperty} setThirdProp={setThirdProp} studentData={studentData}
      setStudentData={setStudentData} />: ""
   }
   </div>
