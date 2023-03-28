@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from 'react'
+import { useDispatch } from 'react-redux'
+import { addUser } from '../userdataSlice'
 
-const UserRegistrationForm = ({toggleHandler}) => {
+const UserRegistrationForm = ({toggleHandler, setStudentData}) => {
 const [firstName, setFirstName] = useState('')
 const [lastName, setLastName] = useState('')
 const [email, setEmail] = useState('')
@@ -8,20 +10,29 @@ const [city, setCity] = useState('')
 const [state, setState] = useState('')
 const [zip, setZip] = useState('')
 const [disabled, setDisabled] = useState(true)
+
+const dispatch = useDispatch()
+
+
 const userSubmitToggler = (e) => {
  e.preventDefault()
+ setDisabled(false)
  let studentData = {firstName, lastName, email, city, state, zip}
- console.log(studentData)
- setFirstName('')
- setLastName('')
- setEmail('')
- setCity('')
- setState('')
- setZip('')
+ //console.log(studentData)
+ setStudentData(studentData)
+ //dispatch(addUser(studentData))
+//  setFirstName('')
+//  setLastName('')
+//  setEmail('')
+//  setCity('')
+//  setState('')
+//  setZip('')
 }
 
 useEffect(()=>{
-    if(firstName!=='' && lastName!=='' && email!=='' && city!=='' && state!=='' && zip!=='' ){
+    if(firstName!=='' && lastName!=='' 
+    // && email!=='' && city!=='' && state!=='' && zip!=='' 
+    ){
         setDisabled(false)
     }
     else{
@@ -51,7 +62,7 @@ useEffect(()=>{
               value={lastName} onChange={(e)=> setLastName(e.target.value)}/>
           </div>
         </div>
-        <div className="flex flex-wrap -mx-3 mb-6">
+        {/* <div className="flex flex-wrap -mx-3 mb-6">
           <div className="w-full px-3">
             <label className="block uppercase tracking-wide text-blue-900 text-xs font-bold mb-2" htmlFor="grid-password">
               Email 
@@ -60,10 +71,10 @@ useEffect(()=>{
              border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none
               focus:bg-white focus:border-gray-500" id="grid-password" type="email" placeholder="" 
               value={email} onChange={(e)=> setEmail(e.target.value)}/>
-            {/* <p className="text-gray-600 text-xs italic">Make it as long and as crazy as you'd like</p> */}
+          
           </div>
-        </div>
-        <div className="flex flex-wrap -mx-3 mb-6">
+        </div> */}
+        {/* <div className="flex flex-wrap -mx-3 mb-6">
           <div className="w-full md:w-1/3 px-3 mb-6 md:mb-0">
             <label className="block uppercase tracking-wide text-blue-900 text-xs font-bold mb-2" htmlFor="grid-city">
               City
@@ -92,9 +103,9 @@ useEffect(()=>{
              leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="grid-zip"
               type="text" placeholder=""  value={zip} onChange={(e)=> setZip(e.target.value)}/>
           </div>
-        </div>
+        </div> */}
      <div>
-     <button type="submit"className={`  text-white text-sm
+     <button type="submit" className={`  text-white text-sm
  py-2 px-4 rounded focus:outline-none focus:shadow-outline mx-2    
  ${ disabled ?`bg-blue-200 pointer-events-none` : `bg-blue-800 cursor-pointer`}`} >
         Save

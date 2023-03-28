@@ -1,28 +1,28 @@
 import React, { useEffect, useState } from 'react'
-import AddNewProperty from './AddNewProperty';
-import PropertyDetailForm from './PropertyDetailForm';
+import AddNewCourse from './AddNewCourse';
+import CourseDetails from './CourseDetails';
+
 import UserRegistrationForm from './UserRegistrationForm';
 
 const MultiStepForm = () => {
   const steps = ['Enter registration details', 'Enter property details'];
   const [toggleStep, setToggleStep] = useState(true)
   const [disabled, setDisabled] = useState(false)
-  const [secondprop, setSecondProp] = useState(false)
+  const [studentData, setStudentData] = useState('') 
+
   const toggleHandler = () => {
     setToggleStep(toggle => !toggle)
     setDisabled(true)
   }
   const backtoggleHandler = () => {
     setToggleStep(toggle => !toggle)
-    setDisabled(false)
+    setDisabled(false) 
   }
-  const addPropertyHandler = () => {
-    setSecondProp(true)
-  }
+  
   console.log(steps.length)
   useEffect(()=>{
-
   },[])
+  //console.log("Student data", studentData)
   return (
     <>
     
@@ -43,12 +43,13 @@ const MultiStepForm = () => {
 </ol>
 <div className='flex flex-col justify-center items-center h-screen'>
     {
-        toggleStep ? <UserRegistrationForm toggleHandler={toggleHandler} /> : 
-        <PropertyDetailForm backtoggleHandler={backtoggleHandler} addPropertyHandler={addPropertyHandler} />
+        toggleStep ? <UserRegistrationForm toggleHandler={toggleHandler} setStudentData={setStudentData} /> : 
+        <CourseDetails backtoggleHandler={backtoggleHandler}  setStudentData={setStudentData} 
+        studentData={studentData} />
     }
-{
-    secondprop ? <AddNewProperty/>: ""
-}
+{/* {
+    secondprop ? <AddNewCourse/>: ""
+} */}
 
 
 </div>
