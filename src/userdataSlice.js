@@ -7,8 +7,9 @@ const userDataSlice = createSlice({
     },
     reducers:{
         addUser:(state, action) => {
-           // console.log(action.payload)
-            state.user.push(action.payload)
+          // console.log(action.payload)
+           state = state.user.splice(0,1,action.payload)
+            //state.user.push(action.payload)
         },
         addCourseDetails:(state, action) => {
             state.user.push(action.payload)

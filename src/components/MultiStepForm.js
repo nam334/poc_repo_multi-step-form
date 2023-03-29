@@ -1,4 +1,6 @@
 import React, { useEffect, useState } from 'react'
+import { useDispatch } from 'react-redux';
+import { addUser } from '../userdataSlice';
 import AddNewCourse from './AddNewCourse';
 import CourseDetails from './CourseDetails';
 
@@ -9,7 +11,7 @@ const MultiStepForm = () => {
   const [toggleStep, setToggleStep] = useState(true)
   const [disabled, setDisabled] = useState(false)
   const [studentData, setStudentData] = useState('') 
-
+  const dispatch = useDispatch()
   const toggleHandler = () => {
     setToggleStep(toggle => !toggle)
     setDisabled(true)
@@ -21,7 +23,9 @@ const MultiStepForm = () => {
   
   //console.log(steps.length)
   useEffect(()=>{
-  },[])
+   console.log(studentData)
+   dispatch(addUser(studentData))
+  },[studentData, dispatch])
   //console.log("Student data", studentData)
   return (
     <>

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { addCourseDetails} from '../userdataSlice'
+import { addCourseDetails, addUser} from '../userdataSlice'
 import AddNewCourse from './AddNewCourse'
 import AddThirdCourse from './AddThirdCourse'
 
@@ -12,12 +12,12 @@ const [disabled, setDisabled] = useState(true)
 const [addproperty, setAddProperty] = useState(true)
 const [secondprop, setSecondProp] = useState(false)
 const [thirdprop, setThirdProp] = useState(false)
+const [submitdisabled, setSubmitDisabled] = useState(true)
 //const courses = useSelector(store => store.)
 const dispatch = useDispatch()
 //console.log("Student", studentData.courseDetails.length)
 const courseDetailsHander = (e) => {
  e.preventDefault()
- 
  setAddProperty(false)
  let courseDetails = [{course, duration, details}]
  //dispatch(addCourseDetails({courseDetails}))
@@ -28,14 +28,25 @@ const addPropertyHandler = () => {
   //studentData!=='' && 
   studentData.courseDetails.length >= 2 && setThirdProp(true)
 }
+
+const saveandsubmithandler = () => {
+  setSecondProp(false)
+  let courseDetails = [{course, duration, details}]
+  setStudentData(prevState => ({...prevState, courseDetails}))
+  setSubmitDisabled(true)
+  setDisabled(true) 
+}
 useEffect(()=>{
   if(course!=='' && duration!=='' && details!==''){
     setDisabled(false)
+    setSubmitDisabled(false)
   }
   else{
     setDisabled(true)
+    setSubmitDisabled(true)
   }
 },[course, duration, details])
+
 //console.log(course)
   return (
     <>
@@ -90,13 +101,18 @@ useEffect(()=>{
         focus:border-gray-500" id="grid-password" type="text" placeholder=""  
         value={details} onChange={(e)=> setDetails(e.target.value)}/>
     
-    </div>
+    </div> 
   </div>
   <div>
-  <button type="submit" className={`bg-blue-800 hover:bg-blue-900 text-white text-sm
+  <button type="submit" className={` text-white text-sm
     py-2 px-4 rounded focus:outline-none focus:shadow-outline
     ${ disabled ?`bg-blue-200 pointer-events-none` : `bg-blue-800 cursor-pointer`  }`
-    }>Save</button>
+    }>Save and add more courses</button>
+
+    <button type="button" className={` text-white text-sm
+    py-2 px-4 rounded focus:outline-none focus:shadow-outline mx-2
+    ${ submitdisabled ?`bg-blue-200 pointer-events-none` : `bg-blue-800 cursor-pointer`  }`
+    } onClick={saveandsubmithandler} >Save and submit (no more courses)</button>
     </div>
    </form>
    {
