@@ -2,21 +2,50 @@ import React, { useEffect, useState } from 'react'
 import { useDispatch } from 'react-redux'
 import { addUser } from '../userdataSlice'
 
-const AddThirdCourse = ({setStudentData, studentData}) => {
-    const [course, setCourse] = useState('')
+const AddThirdCourse = ({setStudentData, studentData, setAddProperty, setDisabled, setSubmitDisabled}) => {
+  const [course, setCourse] = useState('')
   const [duration, setDuration] = useState('')
   const [details, setDetails] = useState('')
+  const [disabledthirdcourse, setDisabledThirdCourse] = useState(true)
+  const [submitdisabledthirdourse, setSubmitDisabledThirdCourse] = useState(true) 
+
+
   const dispatch = useDispatch()
   const courseDetailsHandler = (e) =>{
     e.preventDefault()
     let courses = [{course, duration, details}]
-   
     setStudentData(prevState => ({...prevState,courseDetails:[...prevState.courseDetails,{course, duration, details} ]}))
 
   }
+  const saveandsubmithandler = () => {
+    setAddProperty(true)
+    let courseDetails = [{course, duration, details}]
+    setStudentData(prevState => ({...prevState,courseDetails:[...prevState.courseDetails,{course, duration, details} ]})) 
+    setDisabledThirdCourse(true)
+    setSubmitDisabledThirdCourse(true)
+    setDisabled(true)
+    setSubmitDisabled(true)
+    // setSubmitDisabled(true)
+    // setDisabled(true) 
+  }
+
+  
+
   useEffect(()=>{
     studentData.courseDetails.length >= 2 && dispatch(addUser(studentData))
   },[studentData, dispatch])
+
+  useEffect(()=>{
+    if(course!=='' && duration!=='' && details!==''){
+      setDisabledThirdCourse(false)
+      setSubmitDisabledThirdCourse(false)
+    }
+    else{
+      setDisabledThirdCourse(true)
+      setSubmitDisabledThirdCourse(true)
+    }
+  },[course, duration, details])
+
   return (
     <>
      <div className='flex flex-col'>
@@ -58,10 +87,17 @@ const AddThirdCourse = ({setStudentData, studentData}) => {
     </div>
     <div>
       </div>
-      <button type="submit" className="bg-blue-800 hover:bg-blue-900 text-white text-sm
-      py-2 px-4 rounded focus:outline-none focus:shadow-outline">
-        Save
-    </button>
+      <div>
+  {/* <button type="submit" className={` text-white text-sm
+    py-2 px-4 rounded focus:outline-none focus:shadow-outline
+    ${ disabledthirdcourse ?`bg-blue-200 pointer-events-none` : `bg-blue-800 cursor-pointer`  }`
+    }>Save and add more courses</button> */}
+
+    <button type="button" className={` text-white text-sm
+    py-2 px-4 rounded focus:outline-none focus:shadow-outline mx-2
+    ${ submitdisabledthirdourse ?`bg-blue-200 pointer-events-none` : `bg-blue-800 cursor-pointer`  }`
+    } onClick={saveandsubmithandler} >Save and submit (no more courses)</button>
+    </div>
   </form>
   
     </div>

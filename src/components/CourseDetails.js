@@ -36,6 +36,7 @@ const saveandsubmithandler = () => {
   setSubmitDisabled(true)
   setDisabled(true) 
 }
+
 useEffect(()=>{
   if(course!=='' && duration!=='' && details!==''){
     setDisabled(false)
@@ -50,7 +51,7 @@ useEffect(()=>{
 //console.log(course)
   return (
     <>
-   <div className='flex flex-col'>
+   <div className='mt-10 flex flex-col justify-center items-center'>
   <div>
   <button type="button" className="bg-blue-800 hover:bg-blue-900 text-white text-sm
  py-2 px-4 rounded focus:outline-none focus:shadow-outline"  
@@ -116,13 +117,15 @@ useEffect(()=>{
     </div>
    </form>
    {
-    secondprop ? <AddNewCourse setAddProperty={setAddProperty} studentData={studentData} 
-    setThirdProp={setThirdProp} 
+    secondprop ? <AddNewCourse setAddProperty={setAddProperty} studentData={studentData}  
+    setThirdProp={setThirdProp} setDisabled={setDisabled} setSubmitDisabled={setSubmitDisabled}
      setStudentData={setStudentData} />: ""
   }
    {
-    thirdprop ? <AddThirdCourse setAddProperty={setAddProperty} setThirdProp={setThirdProp} studentData={studentData}
-     setStudentData={setStudentData} />: ""
+    thirdprop ? <AddThirdCourse  setAddProperty={setAddProperty} setThirdProp={setThirdProp} studentData={studentData}
+  
+    
+     setStudentData={setStudentData} setDisabled={setDisabled} setSubmitDisabled={setSubmitDisabled}/>: ""
   }
   </div>
 </>

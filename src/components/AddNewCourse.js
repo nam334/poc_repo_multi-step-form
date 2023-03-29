@@ -1,37 +1,58 @@
 import React, { useEffect, useState } from 'react'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { addCourseDetails } from '../userdataSlice'
- 
-const AddNewCourse = ({setAddProperty, setStudentData, studentData}) => {
+
+
+
+const AddNewCourse = ({setAddProperty,setSubmitDisabled, setDisabled, setStudentData, studentData}) => {
   const [course, setCourse] = useState('')
   const [duration, setDuration] = useState('')
   const [details, setDetails] = useState('')
+  const [disablednewcourse, setDisabledNewCourse] = useState(true)
+  const [submitdisablednewcourse, setSubmitDisabledNewCourse] = useState(true) 
+  const courseDetails = useSelector(store => store?.user?.courseDetails)
+ 
 
-  const dispatch = useDispatch()
   useEffect(()=>{
     setAddProperty(true)
   },[])
-
   const courseDetailsHandler = (e) => {
     e.preventDefault() 
     setAddProperty(false)
-    
-    // let courseDetails = {course, duration, details}
-   // console.log("Before", studentData)
+   
     let courses = [{course, duration, details}]
     console.log(courses)
     setStudentData(prevState => ({...prevState,courseDetails:[...prevState.courseDetails,{course, duration, details} ]}))
-    //console.log("After", studentData)
-    //   dispatch(addCourseDetails({studentData}))
- 
-
-    //dispatch(addCourseDetails({courseDetails}))
-
+  }
+  const saveandsubmithandler = () => {
+    setAddProperty(true)
+    let courseDetails = [{course, duration, details}]
+    setStudentData(prevState => ({...prevState,courseDetails:[...prevState.courseDetails,{course, duration, details} ]}))
+    setDisabledNewCourse(true)
+    setSubmitDisabledNewCourse(true)
+    setSubmitDisabled(true)
+    setDisabled(true) 
   }
   useEffect(()=>{
-    console.log("After", studentData)
-    //dispatch(addCourseDetails({studentData}))
-  },[studentData, dispatch])
+    if(course!=='' && duration!=='' && details!==''){
+      setSubmitDisabledNewCourse(false)
+      setDisabledNewCourse(false)
+    }
+    else{
+      setSubmitDisabledNewCourse(true)
+      setDisabledNewCourse(true)
+    }
+  },[course, duration, details])
+
+  useEffect(()=>{
+    if( studentData.courseDetails.length === 3 )
+    {
+      setDisabledNewCourse(true)
+      setSubmitDisabledNewCourse(true)
+    }
+  },[courseDetails,studentData])
+  // passDataToParent(setDisabledNewCourse,setSubmitDisabledNewCourse)
+  //passDataToParent(()=> ({setDisabledNewCourse,setSubmitDisabledNewCourse}))
   return (
     <>
     <div className='flex flex-col'>
@@ -73,10 +94,17 @@ const AddNewCourse = ({setAddProperty, setStudentData, studentData}) => {
     </div>
     <div>
       </div>
-      <button type="submit" className="bg-blue-800 hover:bg-blue-900 text-white text-sm
-      py-2 px-4 rounded focus:outline-none focus:shadow-outline">
-        Save
-    </button>
+      <div>
+  <button type="submit" className={` text-white text-sm
+    py-2 px-4 rounded focus:outline-none focus:shadow-outline
+    ${ disablednewcourse ?`bg-blue-200 pointer-events-none` : `bg-blue-800 cursor-pointer`  }`
+    }>Save and add more courses</button>
+
+    <button type="button" className={` text-white text-sm
+    py-2 px-4 rounded focus:outline-none focus:shadow-outline mx-2
+    ${ submitdisablednewcourse ?`bg-blue-200 pointer-events-none` : `bg-blue-800 cursor-pointer`  }`
+    } onClick={saveandsubmithandler} >Save and submit (no more courses)</button>
+    </div>
   </form>
   
     </div>
