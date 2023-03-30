@@ -31,7 +31,7 @@ const MultiStepForm = () => {
     <>
     
 <ol className="flex items-center w-full p-3 space-x-2 text-sm font-medium text-center 
-bg-gradient-to-r from-cyan-500 to-blue-500
+bg-gradient-to-r from-cyan-400 to-blue-500
  text-gray-500 shadow-sm justify-center
    dark:text-gray-400 sm:text-base dark:bg-gray-800 sm:p-4 sm:space-x-4">
    {
@@ -48,7 +48,7 @@ bg-gradient-to-r from-cyan-500 to-blue-500
     )))
    }
 </ol>
-<div className='flex flex-col justify-center items-center overflow-y-scroll bg-gradient-to-r from-cyan-500 to-blue-500 '>
+<div className='flex flex-col justify-center items-center overflow-y-scroll bg-gradient-to-r from-cyan-400 to-blue-500 '>
     {
         toggleStep ? <UserRegistrationForm toggleHandler={toggleHandler} setStudentData={setStudentData} /> : 
         <CourseDetails backtoggleHandler={backtoggleHandler}  setStudentData={setStudentData} 

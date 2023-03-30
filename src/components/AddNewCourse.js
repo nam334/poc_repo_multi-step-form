@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { addCourseDetails } from '../userdataSlice'
-
-
+import { addCourseDetails, delCourse } from '../userdataSlice'
+import { v4 as uuidv4 } from 'uuid';
+import Popup from 'reactjs-popup';
+import 'reactjs-popup/dist/index.css';
 
 const AddNewCourse = ({setAddProperty,setSubmitDisabled, setDisabled, setStudentData, studentData}) => {
   const [course, setCourse] = useState('')
@@ -11,7 +12,10 @@ const AddNewCourse = ({setAddProperty,setSubmitDisabled, setDisabled, setStudent
   const [disablednewcourse, setDisabledNewCourse] = useState(true)
   const [submitdisablednewcourse, setSubmitDisabledNewCourse] = useState(true) 
   const courseDetails = useSelector(store => store?.user?.courseDetails)
- 
+  const [id, setId] = useState('')
+  const [deletecourse, setDeleteCourse] = useState(false)
+
+  const dispatch = useDispatch()
 
   useEffect(()=>{
     setAddProperty(true)
@@ -19,10 +23,11 @@ const AddNewCourse = ({setAddProperty,setSubmitDisabled, setDisabled, setStudent
   const courseDetailsHandler = (e) => {
     e.preventDefault() 
     setAddProperty(false)
-   
-    let courses = [{course, duration, details}]
+    let ids = uuidv4()
+      setId(ids)
+    let courses = [{course, duration, details, ids}]
     console.log(courses)
-    setStudentData(prevState => ({...prevState,courseDetails:[...prevState.courseDetails,{course, duration, details} ]}))
+    setStudentData(prevState => ({...prevState,courseDetails:[...prevState.courseDetails,{course, duration, details,ids} ]}))
   }
   const saveandsubmithandler = () => {
     setAddProperty(true)
@@ -43,6 +48,13 @@ const AddNewCourse = ({setAddProperty,setSubmitDisabled, setDisabled, setStudent
       setDisabledNewCourse(true)
     }
   },[course, duration, details])
+
+  const deleteHandler = (id) => {
+    console.log(id)
+  
+    dispatch(delCourse(id))
+   
+  }
 
   useEffect(()=>{
     if( studentData.courseDetails.length === 3 )
@@ -104,6 +116,36 @@ const AddNewCourse = ({setAddProperty,setSubmitDisabled, setDisabled, setStudent
     py-2 px-4 rounded focus:outline-none focus:shadow-outline mx-2
     ${ submitdisablednewcourse ?`bg-blue-200 pointer-events-none` : `bg-blue-800 cursor-pointer`  }`
     } onClick={saveandsubmithandler} >Save and submit (no more courses)</button>
+
+<Popup
+    trigger={<button type="button" className={` text-white text-sm
+    py-2 px-4 rounded focus:outline-none focus:shadow-outline mx-2
+    ${ deletecourse ?`bg-red-200 pointer-events-none` : `bg-red-800 cursor-pointer`  }`
+    }>Delete course</button>}
+    modal
+    nested
+  >
+    {close => (
+      <div className="modal">
+        <button className="close" onClick={close}>
+          &times;
+        </button>
+        <div className="block uppercase tracking-wide 
+        text-blue-900 text-md font-bold mb-2 p-2">Do you really want to delete the course?</div>
+        <div className="content">
+          <button className='text-white text-sm
+    py-1 px-4 rounded focus:outline-none focus:shadow-outline mx-2 bg-green-600' 
+    onClick={()=>deleteHandler(id)}>Yes</button>
+          <button className='text-white text-sm
+    py-1 px-4 rounded focus:outline-none focus:shadow-outline mx-2 bg-red-600' 
+    onClick={close}
+    >No</button>
+        </div>
+      </div>
+    )} 
+  </Popup>
+
+
     </div>
   </form>
   

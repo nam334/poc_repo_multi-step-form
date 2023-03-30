@@ -1,8 +1,11 @@
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { addCourseDetails, addUser} from '../userdataSlice'
+import { addCourseDetails, addUser, delCourse, deleteCourse} from '../userdataSlice'
 import AddNewCourse from './AddNewCourse'
 import AddThirdCourse from './AddThirdCourse'
+import Popup from 'reactjs-popup';
+import 'reactjs-popup/dist/index.css';
+import { v4 as uuidv4 } from 'uuid';
 
 const CourseDetails = ({backtoggleHandler, setStudentData, studentData}) => {
 const [course, setCourse] = useState('')
@@ -12,14 +15,22 @@ const [disabled, setDisabled] = useState(true)
 const [addproperty, setAddProperty] = useState(true)
 const [secondprop, setSecondProp] = useState(false)
 const [thirdprop, setThirdProp] = useState(false)
+const [id, setId] = useState('')
 const [submitdisabled, setSubmitDisabled] = useState(true)
+const [deletecourse, setDeleteCourse] = useState(false)
+const iniCourse = useSelector(store => store.user)
+
+
 //const courses = useSelector(store => store.)
 const dispatch = useDispatch()
-//console.log("Student", studentData.courseDetails.length)
+
 const courseDetailsHander = (e) => {
  e.preventDefault()
  setAddProperty(false)
- let courseDetails = [{course, duration, details}]
+ let ids = uuidv4()
+ setId(ids)
+ let courseDetails = [{course, duration, details, ids}]
+ console.log(courseDetails)
  //dispatch(addCourseDetails({courseDetails}))
  setStudentData(prevState => ({...prevState, courseDetails}))
 }
@@ -28,7 +39,7 @@ const addPropertyHandler = () => {
   //studentData!=='' && 
   studentData.courseDetails.length >= 2 && setThirdProp(true)
 }
-
+console.log(id)
 const saveandsubmithandler = () => {
   setSecondProp(false)
   let courseDetails = [{course, duration, details}]
@@ -48,7 +59,14 @@ useEffect(()=>{
   }
 },[course, duration, details])
 
-//console.log(course)
+const deleteHandler = (id) => {
+  console.log(id)
+
+  dispatch(delCourse(id))
+ 
+}
+
+
   return (
     <>
    <div className='mt-10 flex flex-col justify-center items-center'>
@@ -61,8 +79,7 @@ useEffect(()=>{
    <button type="button" className={`text-white text-sm
  py-2 px-4 rounded focus:outline-none focus:shadow-outline my-4 w-44 justify-end mx-2 
  ${ addproperty ?`bg-blue-200 pointer-events-none` : `bg-blue-800 cursor-pointer`  }
- `}
- onClick={addPropertyHandler} 
+ `} onClick={addPropertyHandler} 
  >
         Add another course
     </button>
@@ -108,12 +125,44 @@ useEffect(()=>{
   <button type="submit" className={` text-white text-sm
     py-2 px-4 rounded focus:outline-none focus:shadow-outline
     ${ disabled ?`bg-blue-200 pointer-events-none` : `bg-blue-800 cursor-pointer`  }`
-    }>Save and add more courses</button>
+    }>Save only</button>
 
     <button type="button" className={` text-white text-sm
     py-2 px-4 rounded focus:outline-none focus:shadow-outline mx-2
-    ${ submitdisabled ?`bg-blue-200 pointer-events-none` : `bg-blue-800 cursor-pointer`  }`
-    } onClick={saveandsubmithandler} >Save and submit (no more courses)</button>
+    ${ submitdisabled ?`bg-emerald-200 pointer-events-none` : `bg-emerald-800 cursor-pointer`  }`
+    } onClick={saveandsubmithandler} >Save and submit</button>
+
+
+
+<Popup
+    trigger={<button type="button" className={` text-white text-sm
+    py-2 px-4 rounded focus:outline-none focus:shadow-outline mx-2
+    ${ deletecourse ?`bg-red-200 pointer-events-none` : `bg-red-800 cursor-pointer`  }`
+    }>Delete course</button>}
+    modal
+    nested
+  >
+    {close => (
+      <div className="modal">
+        <button className="close" onClick={close}>
+          &times;
+        </button>
+        <div className="block uppercase tracking-wide 
+        text-blue-900 text-md font-bold mb-2 p-2">Do you really want to delete the course?</div>
+        <div className="content">
+          <button className='text-white text-sm
+    py-1 px-4 rounded focus:outline-none focus:shadow-outline mx-2 bg-green-600' 
+    onClick={()=>deleteHandler(id)}>Yes</button>
+          <button className='text-white text-sm
+    py-1 px-4 rounded focus:outline-none focus:shadow-outline mx-2 bg-red-600' 
+    onClick={close}
+    >No</button>
+        </div>
+      </div>
+    )} 
+  </Popup>
+
+
     </div>
    </form>
    {

@@ -32,7 +32,8 @@ const userSubmitToggler = (e) => {
 
 useEffect(()=>{
     if(firstName!=='' && lastName!=='' 
-     && email!=='' && city!=='' && state!=='' && zip!=='' 
+     && email!=='' 
+     //&& city!=='' && state!=='' && zip!=='' 
     ){
         setDisabled(false)
     }
@@ -50,7 +51,7 @@ useEffect(()=>{
             <label className="block uppercase tracking-wide text-blue-900 text-xs font-bold mb-2" htmlFor="grid-first-name">
               First Name
             </label>
-            <input className="appearance-none block w-full bg-blue-200 text-blue-900 border 
+            <input className="appearance-none block w-full bg-blue-300 text-blue-900 border 
              rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white"
               id="grid-first-name" type="text" placeholder="" value={firstName} onChange={(e)=> setFirstName(e.target.value)} />
           </div>
@@ -58,7 +59,7 @@ useEffect(()=>{
             <label className="block uppercase tracking-wide text-blue-900 text-xs font-bold mb-2" htmlFor="grid-last-name">
               Last Name
             </label>
-            <input className="appearance-none block w-full bg-blue-200 text-blue-900 border
+            <input className="appearance-none block w-full bg-blue-300 text-blue-900 border
              border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white
               focus:border-gray-500" id="grid-last-name" type="text" placeholder="" 
               value={lastName} onChange={(e)=> setLastName(e.target.value)}/>
@@ -69,19 +70,19 @@ useEffect(()=>{
             <label className="block uppercase tracking-wide text-blue-900 text-xs font-bold mb-2" htmlFor="grid-password">
               Email 
             </label>
-            <input className="appearance-none block w-full bg-blue-200 text-blue-900
+            <input className="appearance-none block w-full bg-blue-300 text-blue-900
              border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none
               focus:bg-white focus:border-gray-500" id="grid-password" type="email" placeholder="" 
               value={email} onChange={(e)=> setEmail(e.target.value)}/>
           
           </div>
         </div>
-        <div className="flex flex-wrap -mx-3 mb-6">
+        {/* <div className="flex flex-wrap -mx-3 mb-6">
           <div className="w-full md:w-1/3 px-3 mb-6 md:mb-0">
             <label className="block uppercase tracking-wide text-blue-900 text-xs font-bold mb-2" htmlFor="grid-city">
               City
             </label>
-            <input className="appearance-none block w-full bg-blue-200
+            <input className="appearance-none block w-full bg-blue-300
              text-blue-900 border border-gray-200 rounded py-3 px-4 
              leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
               id="grid-city" type="text" placeholder="" 
@@ -91,7 +92,7 @@ useEffect(()=>{
           <label className="block uppercase tracking-wide text-blue-900 text-xs font-bold mb-2" htmlFor="grid-city">
               State
             </label>
-            <input className="appearance-none block w-full bg-blue-200 text-blue-900 border
+            <input className="appearance-none block w-full bg-blue-300 text-blue-900 border
              border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white
               focus:border-gray-500" id="grid-city" type="text" placeholder="" 
               value={state} onChange={(e)=> setState(e.target.value)}/>
@@ -101,20 +102,20 @@ useEffect(()=>{
               Zip
             </label>
             <input className="appearance-none block w-full
-             bg-blue-200 text-blue-900 border border-gray-200 rounded py-3 px-4 
+             bg-blue-300 text-blue-900 border border-gray-200 rounded py-3 px-4 
              leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="grid-zip"
               type="text" placeholder=""  value={zip} onChange={(e)=> setZip(e.target.value)}/>
           </div>
-        </div>
+        </div> */}
      <div>
      <button type="submit" className={`  text-white text-sm
  py-2 px-4 rounded focus:outline-none focus:shadow-outline mx-2    
- ${ disabled ?`bg-blue-200 pointer-events-none` : `bg-blue-800 cursor-pointer`}`} >
+ ${ disabled ?`bg-blue-300 pointer-events-none` : `bg-blue-800 cursor-pointer`}`} >
         Save
     </button>
         <button type="button" className={`  text-white text-sm
  py-2 px-4 rounded focus:outline-none focus:shadow-outline mx-2    
- ${ nextStepDisabled ?`bg-blue-200 pointer-events-none` : `bg-blue-800 cursor-pointer`}`} onClick={toggleHandler}>
+ ${ nextStepDisabled ?`bg-blue-300 pointer-events-none` : `bg-blue-800 cursor-pointer`}`} onClick={toggleHandler}>
         Next Step
     </button>
     </div>

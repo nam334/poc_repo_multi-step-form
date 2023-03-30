@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { useDispatch } from 'react-redux'
 import { addUser } from '../userdataSlice'
-
+import { v4 as uuidv4 } from 'uuid';
 const AddThirdCourse = ({setStudentData, studentData, setAddProperty, setDisabled, setSubmitDisabled}) => {
   const [course, setCourse] = useState('')
   const [duration, setDuration] = useState('')
@@ -13,7 +13,8 @@ const AddThirdCourse = ({setStudentData, studentData, setAddProperty, setDisable
   const dispatch = useDispatch()
   const courseDetailsHandler = (e) =>{
     e.preventDefault()
-    let courses = [{course, duration, details}]
+    let id = uuidv4();
+    let courses = [{course, duration, details, id}]
     setStudentData(prevState => ({...prevState,courseDetails:[...prevState.courseDetails,{course, duration, details} ]}))
 
   }

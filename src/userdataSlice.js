@@ -13,9 +13,15 @@ const userDataSlice = createSlice({
         },
         addCourseDetails:(state, action) => {
             state.user.push(action.payload)
+        },
+        delCourse:(state, action) => {
+          console.log(action.payload)
+            let arr = state?.user[0]?.courseDetails
+            console.log(arr)
+           state.user[0] = state?.user[0]?.courseDetails.filter(course => course.ids !== action.payload )
         }
     }
 })
 
-export const {addUser, addCourseDetails} = userDataSlice.actions 
+export const {addUser, addCourseDetails, delCourse} = userDataSlice.actions 
 export default userDataSlice.reducer
