@@ -22,6 +22,7 @@ const AddNewCourse = ({setAddProperty,setSubmitDisabled, setDisabled, setStudent
   },[])
   const courseDetailsHandler = (e) => {
     e.preventDefault() 
+    setDeleteCourse(false)
     setAddProperty(false)
     let ids = uuidv4()
       setId(ids)
@@ -31,8 +32,10 @@ const AddNewCourse = ({setAddProperty,setSubmitDisabled, setDisabled, setStudent
   }
   const saveandsubmithandler = () => {
     setAddProperty(true)
-    let courseDetails = [{course, duration, details}]
-    setStudentData(prevState => ({...prevState,courseDetails:[...prevState.courseDetails,{course, duration, details} ]}))
+    let ids = uuidv4()
+    setId(ids)
+    let courseDetails = [{course, duration, details, ids}]
+    setStudentData(prevState => ({...prevState,courseDetails:[...prevState.courseDetails,{course, duration, details,ids} ]}))
     setDisabledNewCourse(true)
     setSubmitDisabledNewCourse(true)
     setSubmitDisabled(true)
@@ -46,6 +49,7 @@ const AddNewCourse = ({setAddProperty,setSubmitDisabled, setDisabled, setStudent
     else{
       setSubmitDisabledNewCourse(true)
       setDisabledNewCourse(true)
+      setDeleteCourse(true)
     }
   },[course, duration, details])
 
@@ -53,7 +57,9 @@ const AddNewCourse = ({setAddProperty,setSubmitDisabled, setDisabled, setStudent
     console.log(id)
   
     dispatch(delCourse(id))
-   
+    setCourse('')
+    setDuration('')
+    setDetails('')
   }
 
   useEffect(()=>{
@@ -110,12 +116,12 @@ const AddNewCourse = ({setAddProperty,setSubmitDisabled, setDisabled, setStudent
   <button type="submit" className={` text-white text-sm
     py-2 px-4 rounded focus:outline-none focus:shadow-outline
     ${ disablednewcourse ?`bg-blue-200 pointer-events-none` : `bg-blue-800 cursor-pointer`  }`
-    }>Save and add more courses</button>
+    }>Save only</button>
 
     <button type="button" className={` text-white text-sm
     py-2 px-4 rounded focus:outline-none focus:shadow-outline mx-2
-    ${ submitdisablednewcourse ?`bg-blue-200 pointer-events-none` : `bg-blue-800 cursor-pointer`  }`
-    } onClick={saveandsubmithandler} >Save and submit (no more courses)</button>
+    ${ submitdisablednewcourse ?`bg-emerald-200 pointer-events-none` : `bg-emerald-800 cursor-pointer`  }`
+    } onClick={saveandsubmithandler} >Save and submit</button>
 
 <Popup
     trigger={<button type="button" className={` text-white text-sm

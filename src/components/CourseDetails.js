@@ -17,7 +17,7 @@ const [secondprop, setSecondProp] = useState(false)
 const [thirdprop, setThirdProp] = useState(false)
 const [id, setId] = useState('')
 const [submitdisabled, setSubmitDisabled] = useState(true)
-const [deletecourse, setDeleteCourse] = useState(false)
+const [deletecourse, setDeleteCourse] = useState(true)
 const iniCourse = useSelector(store => store.user)
 
 
@@ -27,6 +27,8 @@ const dispatch = useDispatch()
 const courseDetailsHander = (e) => {
  e.preventDefault()
  setAddProperty(false)
+ setDeleteCourse(false)
+ 
  let ids = uuidv4()
  setId(ids)
  let courseDetails = [{course, duration, details, ids}]
@@ -42,7 +44,10 @@ const addPropertyHandler = () => {
 console.log(id)
 const saveandsubmithandler = () => {
   setSecondProp(false)
-  let courseDetails = [{course, duration, details}]
+  setDeleteCourse(false)
+  let ids = uuidv4()
+  setId(ids)
+  let courseDetails = [{course, duration, details, ids}]
   setStudentData(prevState => ({...prevState, courseDetails}))
   setSubmitDisabled(true)
   setDisabled(true) 
@@ -52,18 +57,22 @@ useEffect(()=>{
   if(course!=='' && duration!=='' && details!==''){
     setDisabled(false)
     setSubmitDisabled(false)
+   
   }
   else{
     setDisabled(true)
     setSubmitDisabled(true)
+    setDeleteCourse(true)
   }
 },[course, duration, details])
-
+ 
 const deleteHandler = (id) => {
   console.log(id)
-
+ // close()
   dispatch(delCourse(id))
- 
+  setCourse('')
+  setDuration('')
+  setDetails('')
 }
 
 

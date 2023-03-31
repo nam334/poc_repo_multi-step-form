@@ -1,18 +1,23 @@
 import React, { useEffect, useState } from 'react'
 import { useDispatch } from 'react-redux'
-import { addUser } from '../userdataSlice'
+import { addUser, delCourse } from '../userdataSlice'
 import { v4 as uuidv4 } from 'uuid';
+import Popup from 'reactjs-popup';
+import 'reactjs-popup/dist/index.css';
+
 const AddThirdCourse = ({setStudentData, studentData, setAddProperty, setDisabled, setSubmitDisabled}) => {
   const [course, setCourse] = useState('')
   const [duration, setDuration] = useState('')
   const [details, setDetails] = useState('')
   const [disabledthirdcourse, setDisabledThirdCourse] = useState(true)
   const [submitdisabledthirdourse, setSubmitDisabledThirdCourse] = useState(true) 
-
+  const [deletecourse, setDeleteCourse] = useState(false)
+  const [id, setId] = useState('')
 
   const dispatch = useDispatch()
   const courseDetailsHandler = (e) =>{
     e.preventDefault()
+   
     let id = uuidv4();
     let courses = [{course, duration, details, id}]
     setStudentData(prevState => ({...prevState,courseDetails:[...prevState.courseDetails,{course, duration, details} ]}))
@@ -20,8 +25,11 @@ const AddThirdCourse = ({setStudentData, studentData, setAddProperty, setDisable
   }
   const saveandsubmithandler = () => {
     setAddProperty(true)
+   // setDeleteCourse(false)
+   let ids = uuidv4()
+   setId(ids)
     let courseDetails = [{course, duration, details}]
-    setStudentData(prevState => ({...prevState,courseDetails:[...prevState.courseDetails,{course, duration, details} ]})) 
+    setStudentData(prevState => ({...prevState,courseDetails:[...prevState.courseDetails,{course, duration, details, ids} ]})) 
     setDisabledThirdCourse(true)
     setSubmitDisabledThirdCourse(true)
     setDisabled(true)
@@ -30,7 +38,14 @@ const AddThirdCourse = ({setStudentData, studentData, setAddProperty, setDisable
     // setDisabled(true) 
   }
 
+  const deleteHandler = (id) => {
+    console.log(id)
   
+    dispatch(delCourse(id))
+    setCourse('')
+    setDuration('')
+    setDetails('')
+  }
 
   useEffect(()=>{
     studentData.courseDetails.length >= 2 && dispatch(addUser(studentData))
@@ -40,17 +55,19 @@ const AddThirdCourse = ({setStudentData, studentData, setAddProperty, setDisable
     if(course!=='' && duration!=='' && details!==''){
       setDisabledThirdCourse(false)
       setSubmitDisabledThirdCourse(false)
+      setDeleteCourse(false)
     }
     else{
       setDisabledThirdCourse(true)
       setSubmitDisabledThirdCourse(true)
+      setDeleteCourse(true)
     }
   },[course, duration, details])
 
   return (
     <>
      <div className='flex flex-col'>
-    <form className="w-full max-w-lg my-6" onSubmit={courseDetailsHandler}>
+    <form className="w-full max-w-lg my-6" >
     <div className="flex flex-wrap -mx-3 mb-6">
       <div className="w-full md:w-1/2 px-3 mb-6 md:mb-0">
         <label className="block uppercase tracking-wide text-blue-900 text-xs font-bold mb-2" htmlFor="grid-first-name">
@@ -96,8 +113,37 @@ const AddThirdCourse = ({setStudentData, studentData, setAddProperty, setDisable
 
     <button type="button" className={` text-white text-sm
     py-2 px-4 rounded focus:outline-none focus:shadow-outline mx-2
-    ${ submitdisabledthirdourse ?`bg-blue-200 pointer-events-none` : `bg-blue-800 cursor-pointer`  }`
+    ${ submitdisabledthirdourse ?`bg-emerald-200 pointer-events-none` : `bg-emerald-800 cursor-pointer`  }`
     } onClick={saveandsubmithandler} >Save and submit (no more courses)</button>
+
+<Popup
+    trigger={<button type="button" className={` text-white text-sm
+    py-2 px-4 rounded focus:outline-none focus:shadow-outline mx-2
+    ${ deletecourse ?`bg-red-200 pointer-events-none` : `bg-red-800 cursor-pointer`  }`
+    }>Delete course</button>}
+    modal
+    nested
+  >
+    {close => (
+      <div className="modal">
+        <button className="close" onClick={close}>
+          &times;
+        </button>
+        <div className="block uppercase tracking-wide 
+        text-blue-900 text-md font-bold mb-2 p-2">Do you really want to delete the course?</div>
+        <div className="content">
+          <button className='text-white text-sm
+    py-1 px-4 rounded focus:outline-none focus:shadow-outline mx-2 bg-green-600' 
+    onClick={()=>deleteHandler(id)}>Yes</button>
+          <button className='text-white text-sm
+    py-1 px-4 rounded focus:outline-none focus:shadow-outline mx-2 bg-red-600' 
+    onClick={close}
+    >No</button>
+        </div>
+      </div>
+    )} 
+  </Popup>
+
     </div>
   </form>
   

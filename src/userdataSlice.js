@@ -16,9 +16,9 @@ const userDataSlice = createSlice({
         },
         delCourse:(state, action) => {
           console.log(action.payload)
-            let arr = state?.user[0]?.courseDetails
-            console.log(arr)
-           state.user[0] = state?.user[0]?.courseDetails.filter(course => course.ids !== action.payload )
+            let arr = state?.user[0]
+            console.log(typeof arr)
+           state.user[0].courseDetails = state?.user[0]?.courseDetails.filter(course => course.ids !== action.payload )
         }
     }
 })
