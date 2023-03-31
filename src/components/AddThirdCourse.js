@@ -4,7 +4,7 @@ import { addUser, delCourse } from '../userdataSlice'
 import { v4 as uuidv4 } from 'uuid';
 import Popup from 'reactjs-popup';
 import 'reactjs-popup/dist/index.css';
-
+import { useNavigate } from "react-router-dom";
 const AddThirdCourse = ({setStudentData, studentData, setAddProperty, setDisabled, setSubmitDisabled}) => {
   const [course, setCourse] = useState('')
   const [duration, setDuration] = useState('')
@@ -13,8 +13,9 @@ const AddThirdCourse = ({setStudentData, studentData, setAddProperty, setDisable
   const [submitdisabledthirdourse, setSubmitDisabledThirdCourse] = useState(true) 
   const [deletecourse, setDeleteCourse] = useState(false)
   const [id, setId] = useState('')
-
+  
   const dispatch = useDispatch()
+  const navigate = useNavigate()
   const courseDetailsHandler = (e) =>{
     e.preventDefault()
    
@@ -34,6 +35,7 @@ const AddThirdCourse = ({setStudentData, studentData, setAddProperty, setDisable
     setSubmitDisabledThirdCourse(true)
     setDisabled(true)
     setSubmitDisabled(true)
+    navigate('/success')
     // setSubmitDisabled(true)
     // setDisabled(true) 
   }

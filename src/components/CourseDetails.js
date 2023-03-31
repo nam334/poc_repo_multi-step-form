@@ -6,6 +6,7 @@ import AddThirdCourse from './AddThirdCourse'
 import Popup from 'reactjs-popup';
 import 'reactjs-popup/dist/index.css';
 import { v4 as uuidv4 } from 'uuid';
+import { useNavigate } from 'react-router-dom'
 
 const CourseDetails = ({backtoggleHandler, setStudentData, studentData}) => {
 const [course, setCourse] = useState('')
@@ -23,7 +24,7 @@ const iniCourse = useSelector(store => store.user)
 
 //const courses = useSelector(store => store.)
 const dispatch = useDispatch()
-
+const navigate = useNavigate()
 const courseDetailsHander = (e) => {
  e.preventDefault()
  setAddProperty(false)
@@ -51,6 +52,7 @@ const saveandsubmithandler = () => {
   setStudentData(prevState => ({...prevState, courseDetails}))
   setSubmitDisabled(true)
   setDisabled(true) 
+  navigate('/success')
 }
 
 useEffect(()=>{
